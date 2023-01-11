@@ -43,6 +43,7 @@ public class Contacts {
             switch (caseSwitch) {
                 case 1:
                     // view contacts
+                    // .isEmpty method is used throughtout project to check if the input string is empty or not
                     if (contactList.isEmpty()) {
                         System.out.println("No contacts available to view.");
                         break;
@@ -54,6 +55,8 @@ public class Contacts {
                     break;
                 case 2:
                     // add new contact
+                    //.trim method eliminates leading and trailing spaces- checking before and after string.
+                    // nextline() method uses util scanner , scans current position until it finds a line seperator, returns String from current position to end of line.
                     System.out.print("Enter a name: ");
                     String name = sc.nextLine().trim();
                     if (name.isEmpty()) {
@@ -66,7 +69,8 @@ public class Contacts {
                         System.out.println("Phone number should not be empty.");
                         break;
                     }
-
+                    //.contains() method checks whether a string contains a sequence of chars. Returns true if chars. exist
+                    //.adds() method of java collection interface inserts specified element in this collection. It returns a boolean value true
                     String newContact = name.toLowerCase() + " " + phoneNumber.toLowerCase();
                     if (contactList.contains(newContact)) {
                         System.out.println("This contact already exists.");
@@ -102,6 +106,7 @@ public class Contacts {
                         System.out.println("Name should not be empty.");
                         break;
                     }
+                    //.get() return value of var name.
                     boolean isDeleted = false;
                     for (int i = 0; i < contactList.size(); i++) {
                         if (contactList.get(i).toLowerCase().contains(deleteName.toLowerCase())) {
