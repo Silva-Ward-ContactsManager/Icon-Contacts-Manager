@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
@@ -6,7 +7,7 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 
 public class Contacts {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
         Path path = Paths.get(".","contacts.txt");
         Scanner sc = new Scanner(System.in);
