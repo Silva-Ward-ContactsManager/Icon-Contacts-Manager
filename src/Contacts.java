@@ -31,8 +31,7 @@ public class Contacts {
                 System.out.println("Contacts:");
                 for (String contact : contactList) {
                     System.out.println(contact);
-                }
-                break;
+                }  break;
             case 2:
                 // add new contact
                 System.out.println("Enter a name:");
