@@ -8,13 +8,19 @@ import java.util.ArrayList;
 
 public class Contacts {
     public static void main(String[] args) throws IOException {
-
+        // Define the file path
         Path path = Paths.get(".", "contacts.txt");
         Scanner sc = new Scanner(System.in);
         List<String> contactList = new ArrayList<>();
+        try {
+            // read contact list from file
+            contactList = Files.readAllLines(path);
+        } catch (IOException e) {
+            // If file does not exists, it creates a new file
+            Files.createFile(path);
+            System.out.println("contacts.txt file created. Add new contact to begin.");
+        }
 
-        // read contact list from file
-        contactList = Files.readAllLines(path);
         boolean shouldContinue = true;
         while (shouldContinue) {
             System.out.println("1. View Contacts");
@@ -23,11 +29,24 @@ public class Contacts {
             System.out.println("4. Delete an existing contact");
             System.out.println("0. Exit");
             System.out.println("Enter your choice:");
-            int caseSwitch = sc.nextInt();
+
+            int caseSwitch = -1;
+            try {
+                caseSwitch = sc.nextInt();
+                sc.nextLine();
+            } catch (Exception e) {
+                sc.nextLine();
+                System.out.println("Invalid input, please enter a valid number.");
+                continue;
+            }
 
             switch (caseSwitch) {
                 case 1:
                     // view contacts
+                    if (contactList.isEmpty()) {
+                        System.out.println("No contacts available to view.");
+                        break;
+                    }
                     System.out.println("Contacts:");
                     for (String contact : contactList) {
                         System.out.println(contact);
@@ -35,20 +54,38 @@ public class Contacts {
                     break;
                 case 2:
                     // add new contact
-                    System.out.println("Enter a name:");
-                    String name = sc.nextLine();
-                    System.out.println("Enter a phone number:");
-                    String phoneNumber = sc.nextLine();
-                    contactList.add(name.toLowerCase() + " " + phoneNumber.toLowerCase());
-                    System.out.println("Contact added successfully");
+                    System.out.print("Enter a name: ");
+                    String name = sc.nextLine().trim();
+                    if (name.isEmpty()) {
+                        System.out.println("Name should not be empty.");
+                        break;
+                    }
+                    System.out.print("Enter a phone number: ");
+                    String phoneNumber = sc.nextLine().trim();
+                    if (phoneNumber.isEmpty()) {
+                        System.out.println("Phone number should not be empty.");
+                        break;
+                    }
+
+                    String newContact = name.toLowerCase() + " " + phoneNumber.toLowerCase();
+                    if (contactList.contains(newContact)) {
+                        System.out.println("This contact already exists.");
+                    } else {
+                        contactList.add(newContact);
+                        System.out.println("Contact added successfully.");
+                    }
                     break;
                 case 3:
                     // search contact by name
-                    System.out.println("Enter a name to search:");
-                    String searchName = sc.nextLine();
+                    System.out.print("Enter a name to search: ");
+                    String searchName = sc.nextLine().trim();
+                    if (searchName.isEmpty()) {
+                        System.out.println("Name should not be empty.");
+                        break;
+                    }
                     boolean userFound = false;
                     for (String contact : contactList) {
-                        if (contact.contains(searchName.toLowerCase())) {
+                        if (contact.toLowerCase().contains(searchName.toLowerCase())) {
                             System.out.println(contact);
                             userFound = true;
                         }
@@ -59,14 +96,23 @@ public class Contacts {
                     break;
                 case 4:
                     // delete contact
-                    System.out.println("Enter a name to delete:");
-                    String deleteName = sc.nextLine();
+                    System.out.print("Enter a name to delete: ");
+                    String deleteName = sc.nextLine().trim();
+                    if (deleteName.isEmpty()) {
+                        System.out.println("Name should not be empty.");
+                        break;
+                    }
+                    boolean isDeleted = false;
                     for (int i = 0; i < contactList.size(); i++) {
-                        if (contactList.get(i).contains(deleteName.toLowerCase())) {
+                        if (contactList.get(i).toLowerCase().contains(deleteName.toLowerCase())) {
                             contactList.remove(i);
                             System.out.println("Contact deleted successfully.");
+                            isDeleted = true;
                             break;
                         }
+                    }
+                    if (!isDeleted) {
+                        System.out.println("Contact not found.");
                     }
                     break;
                 case 0:
@@ -83,3 +129,5 @@ public class Contacts {
         }
     }
 }
+
+
